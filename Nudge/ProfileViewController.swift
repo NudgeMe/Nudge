@@ -15,10 +15,27 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     @IBOutlet weak var pictureImageView: UIImageView!
     @IBOutlet weak var usernameLabel: UILabel!
     
+    @IBOutlet weak var realName: UILabel!
+    
+    @IBOutlet weak var groupLabel: UILabel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        usernameLabel.text = PFUser.current()?.username
-
+        if let user = PFUser.current() {
+        usernameLabel.text = user.username
+        realName.text = user["fullname"] as? String
+    
+        if (user["isInGroup"] as! Bool){
+                groupLabel.text = user["group"] as? String
+            }
+        else {
+                groupLabel.text = "No Group"
+            
+            }
+            
+        
+        }
+        
         // Do any additional setup after loading the view.
     }
     
@@ -79,7 +96,10 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         }
     }
 
-    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewDidLoad()
+    }
     
     /*
     // MARK: - Navigation

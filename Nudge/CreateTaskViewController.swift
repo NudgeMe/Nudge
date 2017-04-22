@@ -9,11 +9,10 @@
 import UIKit
 
 class CreateTaskViewController: UIViewController {
-    
-    var newTask: Task?
 
-    @IBOutlet weak var descriptionTextField: UITextField!
     @IBOutlet weak var titleTextField: UITextField!
+    
+    @IBOutlet weak var descriptionText: UITextView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,10 +26,22 @@ class CreateTaskViewController: UIViewController {
     }
     
     @IBAction func onCreate(_ sender: Any) {
-        newTask?.title = titleTextField.text
-        newTask?.taskDescription = descriptionTextField.text
+        Task.createTask(taskTitle: titleTextField.text, taskDescription: descriptionText.text) { (success: Bool,  error: Error?) in
+            if success {
+                print("task created")
+                self.dismiss(animated: true, completion: nil)
+                self.viewDidAppear(true)
+            }
+            else {
+            print(error?.localizedDescription)}
+        }
+        
+    }
+    @IBAction func onCancel(_ sender: Any) {
+        self.dismiss(animated: true, completion: nil)
     }
 
+    
     /*
     // MARK: - Navigation
 

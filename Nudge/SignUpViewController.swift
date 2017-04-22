@@ -35,7 +35,9 @@ class SignUpViewController: UIViewController {
         
         newUser.username = userNameTextField.text
         newUser.password = passwordTextField.text
+        newUser["fullname"] = fullNameTextField.text
         newUser["isInGroup"] = false
+        newUser["group"] = ""
         newUser["Phone"] = phoneTextField.text
         newUser["Address"] = addressTextField.text
         newUser.signUpInBackground { (success: Bool, error: Error?) in
@@ -46,6 +48,11 @@ class SignUpViewController: UIViewController {
                 print(error?.localizedDescription)
             }
         }
+        
+    }
+    
+    @IBAction func onCancel(_ sender: Any) {
+        self.dismiss(animated: true, completion: nil)
         
     }
     

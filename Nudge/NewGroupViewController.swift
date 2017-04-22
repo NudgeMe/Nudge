@@ -7,12 +7,14 @@
 //
 
 import UIKit
+import Parse
 
 class NewGroupViewController: UIViewController {
 
+    @IBOutlet weak var groupName: UITextField!
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        let calendar: Calendar
         // Do any additional setup after loading the view.
     }
 
@@ -21,7 +23,26 @@ class NewGroupViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    @IBAction func textChanged(_ sender: Any) {
+        
+    }
+    @IBAction func onCreateGroup(_ sender: Any) {
+        Group.newGroup(groupName: groupName.text, user: PFUser.current()!) { (success: Bool,error: Error? ) in
+            if success {
+                self.dismiss(animated: true, completion: nil)
+                self.viewWillAppear(true)
+            }
+            
+            else{
+                print(error?.localizedDescription)
+            }
+        }
+    }
+    
 
+    @IBAction func onCancel(_ sender: Any) {
+        self.dismiss(animated: true, completion: nil)
+    }
     /*
     // MARK: - Navigation
 

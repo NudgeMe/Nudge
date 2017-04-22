@@ -11,8 +11,10 @@ import Parse
 class Group: NSObject {
     
     class func newGroup(groupName: String?,user: PFUser, withCompletion completion: @escaping PFBooleanResultBlock){
-        user.addUniqueObject("", forKey: "Group")
-    
+         user["group"] = groupName
+         user["isInGroup"] = true
+        user.saveInBackground(block: completion)
+       
     }
     
     
