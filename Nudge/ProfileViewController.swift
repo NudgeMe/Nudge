@@ -19,11 +19,28 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     
     @IBOutlet weak var groupLabel: UILabel!
     
+    var image = UIImage()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         if let user = PFUser.current() {
         usernameLabel.text = user.username
         realName.text = user["fullname"] as? String
+        
+        var user: PFObject!{
+        didSet{
+            if let profileImage = user["image"] as? PFFile{
+                    profileImage.getDataInBackground({ (imageData:Data?, error:Error?) in
+                        if let imageData = imageData{
+                            self.pictureImageView.image = UIImage(data: imageData)
+                        }
+                    }   )
+            }
+            }
+            }
+        
+    
+
     
             /*
         if (user["isInGroup"] as? Bool)!{
@@ -79,9 +96,34 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         //Set image
         pictureImageView.image = originalImage
         
+        //save image
+        image = originalImage
+        
         //Dismiss imagePIckerController to go back to original view controller
         dismiss(animated: true, completion: nil)
     }
+    
+    func fetchPic(){
+        print("fetching profile picture")
+        let query = PFQuery(className: "User")
+        query.whereKey("username", equalTo: PFUser.current()?.username!)
+        
+        query.findObjectsInBackground { (users: [PFObject]?, error: Error?) in
+            if let users = users{
+                let user = users[0]
+                if let profileImage = user["image"] as? PFFile{
+                    profileImage.getDataInBackground({ (imageData:Data?, error:Error?) in
+                        if let imageData = imageData{
+                            self.pictureImageView.image = UIImage(data: imageData)
+                        }
+                    })
+                }
+               
+            }
+        }
+        
+    }
+
     
     @IBAction func onCreateGroup(_ sender: Any) {
         let user = PFUser.current()!
