@@ -25,13 +25,14 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         usernameLabel.text = user.username
         realName.text = user["fullname"] as? String
     
-        if (user["isInGroup"] as! Bool){
+            /*
+        if (user["isInGroup"] as? Bool)!{
                 groupLabel.text = user["group"] as? String
             }
         else {
                 groupLabel.text = "No Group"
             
-            }
+            }*/
             
         
         }
@@ -84,8 +85,8 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     
     @IBAction func onCreateGroup(_ sender: Any) {
         let user = PFUser.current()!
-        let isInGroup = user["isInGroup"] as! Bool
-        if isInGroup{
+        let isInGroup = user["isInGroup"] as! Bool?
+        if isInGroup != nil {
             let alert = UIAlertController(title: "Oops", message: "Already in a group", preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
             self.present(alert, animated: true, completion: nil)

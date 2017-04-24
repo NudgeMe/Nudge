@@ -31,6 +31,9 @@ class CreateTaskViewController: UIViewController {
                 print("task created")
                 self.dismiss(animated: true, completion: nil)
                 self.viewDidAppear(true)
+                //TODO: save task data
+                
+                self.performSegue(withIdentifier: "toMain", sender: nil)
             }
             else {
             print(error?.localizedDescription)}
@@ -39,6 +42,7 @@ class CreateTaskViewController: UIViewController {
     }
     @IBAction func onCancel(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
+        self.performSegue(withIdentifier: "toMain", sender: nil)
     }
 
     

@@ -22,7 +22,8 @@ class Task: NSObject {
         task["description"] = taskDescription
        // task["assginee"] = assignee
         task["date"] = "4/22/2017"
-        task["group"] = PFUser.current()?["group"]
+        
+        //task["group"] = PFUser.current()?["group"]
         task.saveInBackground(block: completion)
 
 }
