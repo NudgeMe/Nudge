@@ -9,38 +9,6 @@
 import UIKit
 import Parse
 
-class User: PFObject{
-    var image: UIImage?
-    var realname: String?
-    var username: String?
-    
-    class func postUSerImage(image: UIImage?) {
-        
-        let user = PFObject(className: "User")
-        
-        user["image"] = getPFFileFromImage(image: image)
-        user["username"] = PFUser.current()?.username as String!
-        user["realname"] = "REALNAME"
-        user.saveInBackground()
-        print("saved user")
-    }
-    
-    /**
-     Method to convert UIImage to PFFile
-     
-     - parameter image: Image that the user wants to upload to parse
-     
-     - returns: PFFile for the the data in the image
-     */
-    class func getPFFileFromImage(image: UIImage?) -> PFFile? {
-        if let image = image{
-            if let imageData = UIImagePNGRepresentation(image){
-                return PFFile(name: "image.png", data: imageData)
-            }
-        }
-        return nil
-    }
-}
 
 
 class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate{
@@ -55,6 +23,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     
     var image = UIImage()
     var users = [PFObject]()
+    //var users = [PFUser]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -63,7 +32,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         realName.text = user["fullname"] as? String
         fetchPic()
         
-        var user2: PFObject!{
+        var user2: PFUser!{
         didSet{
             if let profileImage = user["image"] as? PFFile{
                     profileImage.getDataInBackground({ (imageData:Data?, error:Error?) in
@@ -82,7 +51,6 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
                 groupLabel.text = "No Group"
             
             }
-            
         
         }
         
@@ -142,14 +110,12 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         User.postUSerImage(image: image)
         print("chosen image")
         self.pictureImageView.image = self.image
-                
-                //self.fetchPic()
-        
+        self.fetchPic()
     }
     
     func fetchPic(){
         print("fetching profile picture")
-        let query = PFQuery(className: "User")
+        let query = PFQuery(className: "_User")
         //pictureImageView.image = image
         query.whereKey("username", equalTo: PFUser.current()?.username!)
         
@@ -169,13 +135,11 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
                         }
                     })
                 }
-               
             }
             else{
                 print ("ERROR \(error?.localizedDescription)")
             }
         })
-        
     }
 
     
@@ -186,7 +150,6 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
             let alert = UIAlertController(title: "Oops", message: "Already in a group", preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
             self.present(alert, animated: true, completion: nil)
-            
         }
         else {
             self.performSegue(withIdentifier: "newGroupSegue", sender: nil)

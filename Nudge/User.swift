@@ -8,19 +8,24 @@
 
 import UIKit
 import Parse
-/*
+
 class User: PFObject{
     var image: UIImage?
     var realname: String?
     var username: String?
     
-    class func postUSerImage(image: UIImage?, withCompletion completion: PFBooleanResultBlock?) {
+    class func postUSerImage(image: UIImage?) {
         
-        let user = PFObject(className: "User")
+        //let user = PFObject(className: "User")
+        
+        let user = PFUser.current()!
+        
         
         user["image"] = getPFFileFromImage(image: image)
-        user["username"] = PFUser.current()?.username
-        //user["realname"] = PFUser.current().
+       // user["username"] = PFUser.current()?.username as String!
+       // user["realname"] = "REALNAME"
+        user.saveInBackground()
+        print("saved user")
     }
     
     /**
@@ -38,5 +43,6 @@ class User: PFObject{
         }
         return nil
     }
-}*/
+}
+
 
