@@ -8,7 +8,7 @@
 
 import UIKit
 import Parse
-
+/*
 class User: PFObject{
     var image: UIImage?
     var realname: String?
@@ -38,5 +38,5 @@ class User: PFObject{
         }
         return nil
     }
-}
+}*/
 
